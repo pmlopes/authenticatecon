@@ -1,0 +1,21 @@
+{
+  "name": "empty-project",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A barebones application",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@es4x/create": "latest",
+    "@vertx/unit": "latest"
+  },
+  "dependencies": {
+    "@vertx/core": "latest"
+  },
+  "scripts": {
+    "start": "es4x",
+    "test": "es4x test index.test.js"
+  }
+}
