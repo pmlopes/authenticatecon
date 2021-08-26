@@ -3,19 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "description": "A barebones application",
-  "main": "index.js",
+  "main": "index.mjs",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@es4x/create": "latest",
-    "@vertx/unit": "latest"
+    "@es4x/create": "latest"
   },
   "dependencies": {
-    "@vertx/core": "latest"
+    "@vertx/core": "latest",
+    "@vertx/web": "latest",
+    "@vertx/auth-webauthn": "latest"
   },
   "scripts": {
-    "start": "es4x",
-    "test": "es4x test index.test.js"
+    "start": "es4x"
   }
 }
