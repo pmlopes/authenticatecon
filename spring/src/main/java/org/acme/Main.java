@@ -1,38 +1,35 @@
 package org.acme;
 
-import io.quarkus.runtime.Quarkus;
-import io.quarkus.runtime.QuarkusApplication;
-import io.quarkus.runtime.annotations.QuarkusMain;
-import io.vertx.core.Vertx;
+import javax.annotation.PostConstruct;
+
 import io.vertx.core.http.CookieSameSite;
+import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.net.JksOptions;
 import io.vertx.ext.auth.webauthn.RelyingParty;
 import io.vertx.ext.auth.webauthn.WebAuthn;
 import io.vertx.ext.auth.webauthn.WebAuthnOptions;
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.handler.*;
+import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.SessionHandler;
+import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.ext.web.handler.WebAuthnHandler;
 import io.vertx.ext.web.sstore.LocalSessionStore;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.inject.Inject;
+import io.vertx.core.Vertx;
 
-@QuarkusMain
-public class Main implements QuarkusApplication {
+@SpringBootApplication
+public class Main {
 
-    public static void main(String... args) {
-        Quarkus.run(Main.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
     }
 
-    @Inject
-    Vertx vertx;
-
-    @Inject
-    Router app;
-
-    @ConfigProperty(name = "fido2.origin")
-    String origin;
-
-    @Override
-    public int run(String... args) {
+    @PostConstruct
+    public void deployVerticle() {
+        final Vertx vertx = Vertx.vertx();
+        final Router app = Router.router(vertx);
 
         // Dummy database, real world workloads
         // use a persistent store or course!
@@ -59,7 +56,7 @@ public class Main implements QuarkusApplication {
 
         // security handler
         WebAuthnHandler webAuthnHandler = WebAuthnHandler.create(webAuthN)
-                .setOrigin(origin)
+                .setOrigin("https://192.168.178.210.nip.io:8443")
                 // required callback
                 .setupCallback(app.post("/webauthn/callback"))
                 // optional register callback
@@ -74,7 +71,17 @@ public class Main implements QuarkusApplication {
         app.route()
                 .handler(StaticHandler.create("webroot"));
 
-        Quarkus.waitForExit();
-        return 0;
+        vertx.createHttpServer(
+                        new HttpServerOptions()
+                                .setSsl(true)
+                                .setKeyStoreOptions(
+                                        new JksOptions()
+                                                .setPath("cert-store.jks")
+                                                .setPassword("secret")))
+
+                .requestHandler(app)
+                .listen(8443, "0.0.0.0")
+                .onFailure(Throwable::printStackTrace)
+                .onSuccess(v -> System.out.println("Server listening at: https://192.168.178.210.nip.io:8443"));
     }
 }

@@ -59,18 +59,20 @@ app.route("/protected/*").handler(webAuthnHandler);
 app.route()
     .handler(StaticHandler.create());
 
-try {
-    let server = vertx.createHttpServer(
-        new HttpServerOptions()
-            .setSsl(true)
-            .setKeyStoreOptions(
-                new JksOptions()
-                    .setPath("cert-store.jks")
-                    .setPassword("secret")))
-        .requestHandler(app)
-        .listen(8443, "0.0.0.0");
-
-    console.log("Server listening at: https://192.168.178.210.nip.io:8443");
-} catch (e) {
-    console.trace(e);
-}
+(async function() {
+    try {
+        let server = await vertx.createHttpServer(
+            new HttpServerOptions()
+                .setSsl(true)
+                .setKeyStoreOptions(
+                    new JksOptions()
+                        .setPath("cert-store.jks")
+                        .setPassword("secret")))
+            .requestHandler(app)
+            .listen(8443, "0.0.0.0");
+    
+        console.log("Server listening at: https://192.168.178.210.nip.io:8443");
+    } catch (e) {
+        console.trace(e);
+    }
+})();

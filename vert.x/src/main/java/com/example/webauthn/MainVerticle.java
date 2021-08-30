@@ -1,13 +1,9 @@
 package com.example.webauthn;
 
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.CompositeFuture;
-import io.vertx.core.Future;
 import io.vertx.core.Promise;
-import io.vertx.core.file.FileSystem;
 import io.vertx.core.http.CookieSameSite;
 import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.JksOptions;
 import io.vertx.ext.auth.webauthn.RelyingParty;
 import io.vertx.ext.auth.webauthn.WebAuthn;
@@ -15,9 +11,6 @@ import io.vertx.ext.auth.webauthn.WebAuthnOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.*;
 import io.vertx.ext.web.sstore.LocalSessionStore;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainVerticle extends AbstractVerticle {
 
