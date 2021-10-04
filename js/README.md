@@ -21,19 +21,10 @@ keytool -importkeystore -srckeystore cert-store.jks -destkeystore cert-store.jks
 
 # Run
 
-Start the unsecure application
-
 ```shell
-python3 -m http.server --directory unsecure
+npm start
 ```
 
-And then start the vert.x reverse proxy:
-
-```shell
-java -jar target/webauthn-4.1.2.jar
-```
-
-Open your browser to https://192.168.172.210.nip.io:8443 and the gateway will enforce the security before proxying the
-request to the python application.
+Open your browser to https://192.168.172.210.nip.io:8443
 
 NOTE: replace the given IP address with your own.
