@@ -2,7 +2,7 @@
 
 Here you will find the conpanion demos for the [Authenticate 2021 Conference](https://authenticatecon.com/session/instant-passwordless-modern-jvm-applications-with-vert-x-and-fido2/).
 
-You can find the [slides](https://jetdrone.xyz/presentations/authenticatecon-2021) for the talk online.
+You can find the [slides](https://www.jetdrone.xyz/presentations/authenticate-2021) for the talk online.
 
 In this repo you can find the same application written using different frameworks, however the security is handled by
 [Eclipse Vert.x](https://vertx.io).
